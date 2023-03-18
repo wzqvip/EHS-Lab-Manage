@@ -4,7 +4,7 @@
  *                  Users have to implement all the functions in epdif.cpp
  *  @author     :   Yehui from Waveshare
  *
- *  Copyright (C) Waveshare     August 3 2017
+ *  Copyright (C) Waveshare     August 10 2017
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documnetation files (the "Software"), to deal
