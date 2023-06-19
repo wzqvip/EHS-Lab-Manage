@@ -27,13 +27,14 @@
 
 * 终端机
   * 主控
-    * Arduino (Atmel)
-    * RP2040
-    * ESP32
-    * NRF528xx
+    * ~~Arduino (Atmel)~~
+    * ~~RP2040~~
+    * ~~ESP32~~
+    * NRF52832
+    * NRF52840
   * 无线
-    * 蓝牙
-    * WIFI
+    * BLE
+    * ~~WIFI~~
     * Zigbee
     * 2.4G 其他协议
   * 显示
@@ -49,6 +50,7 @@
     * 其他x86
   * 无线
     * 同终端机
+    * WIFI
   * 有线
     * USB串口
     * 网口有线接入
