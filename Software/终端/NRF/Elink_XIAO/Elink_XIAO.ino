@@ -1,5 +1,7 @@
 /*********************************************************************
  This is an example for our nRF52 based Bluefruit LE modules
+  Please use Adafruit Connect to upload image.
+  It works with Waveshare 2.9inch 3-color e-ink display.
 
  MIT license, check LICENSE for more information
  All text above, and the splash screen below must be included in
