@@ -87,6 +87,14 @@ void setup() {
     display.begin();
     display.clearBuffer();
 
+    display.clearBuffer();
+    display.setTextSize(3);
+    display.setCursor((display.width() - 144) / 2 - 40, (display.height() - 24) / 2);
+    display.setTextColor(EPD_BLACK);
+    display.print("EHS Lab E-Tag");
+    display.setTextColor(EPD_RED);
+    display.display();
+
     delay(500);
     Serial.print("Eink Terminal is READY.\n");
 
@@ -138,12 +146,14 @@ void startAdv(void) {
     Bluefruit.Advertising.addFlags(BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE);
     Bluefruit.Advertising.addTxPower();
     Bluefruit.Advertising.addAppearance(BLE_APPEARANCE_GENERIC_CLOCK);
+    Bluefruit.setName("EHS Lab e-Tag 01");
 
     // Include bleuart 128-bit uuid
     Bluefruit.Advertising.addService(bleuart);
 
     // There is no room for Name in Advertising packet
     // Use Scan response for Name
+    char* board_name = "EHS Lab E-tag 01";
     Bluefruit.ScanResponse.addName();
 
     /* Start Advertising
