@@ -52,7 +52,7 @@ not used
 #define EPD_MISO 20
 #define EPD_SCK 17
 
-Adafruit_IL0373 display(212, 104, EPD_MISO, EPD_SCK, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, -1, EPD_BUSY);
+Adafruit_UC8151D display(212, 104, EPD_MISO, EPD_SCK, EPD_DC, EPD_RESET, EPD_CS, SRAM_CS, -1, EPD_BUSY);
 
 
                 // Adafruit_IL0373(int width, int height, int16_t SID, int16_t SCLK, int16_t DC,
