@@ -125,7 +125,7 @@ class Ui_mainWindow(object):
 
         # 页面标签
         self.page_label = QtWidgets.QLabel(page)
-        self.page_label.setGeometry(QtCore.QRect(200, 200, 500, 100))
+        self.page_label.setGeometry(QtCore.QRect(200, 100, 500, 100))
         self.page_label.setFont(QFont('Arial', 24))
         self.page_label.setText(label_text)
         self.page_label.setStyleSheet("background-color: white; border: 3px solid black;")

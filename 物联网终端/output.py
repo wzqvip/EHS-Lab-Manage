@@ -23,7 +23,7 @@ class Ui_mainWindow(object):
 
         # 数据库注册页面
         self.db_page = QtWidgets.QWidget()
-        self.setup_sub_page(self.db_page, "数据库注册页面")
+        self.setup_sub_page_reg(self.db_page, "数据库注册页面")
         self.stackedWidget.addWidget(self.db_page)
 
         # 指纹登录页面
@@ -104,12 +104,31 @@ class Ui_mainWindow(object):
         self.back_button.setText("返回")
         self.back_button.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.main_page))
 
-        # 页面标签，添加白色背景和边框
+        # 页面标签
         self.page_label = QtWidgets.QLabel(page)
-        self.page_label.setGeometry(QtCore.QRect(200, 100, 500, 100))  # 标签上移，给按钮留空间
+        self.page_label.setGeometry(QtCore.QRect(200, 100, 500, 100))
         self.page_label.setFont(QFont('Arial', 24))
         self.page_label.setText(label_text)
-        self.page_label.setStyleSheet("background-color: white; border: 1px solid black;")  # 添加背景和边框
+        self.page_label.setStyleSheet("background-color: white; border: 3px solid black;")
+        self.page_label.setAlignment(QtCore.Qt.AlignCenter)
+
+    def setup_sub_page_reg(self, page, label_text):
+        # 设置子页面内容
+        page.setObjectName(label_text)
+
+        # 返回按钮
+        self.back_button = QtWidgets.QPushButton(page)
+        self.back_button.setGeometry(QtCore.QRect(10, 10, 80, 30))
+        self.back_button.setText("返回")
+        self.back_button.clicked.connect(lambda: self.stackedWidget.setCurrentWidget(self.main_page))
+
+        # 页面标签
+        self.page_label = QtWidgets.QLabel(page)
+        self.page_label.setGeometry(QtCore.QRect(200, 100, 500, 100))
+        self.page_label.setFont(QFont('Arial', 24))
+        self.page_label.setText(label_text)
+        self.page_label.setStyleSheet("background-color: white; border: 3px solid black;")
+        self.page_label.setAlignment(QtCore.Qt.AlignCenter)
 
         # 添加三个按钮，布局和主页面一样
         self.clear_db_button = QtWidgets.QPushButton(page)
@@ -127,7 +146,7 @@ class Ui_mainWindow(object):
         self.delete_user_button.setText("删除用户")
         self.delete_user_button.clicked.connect(self.delete_user)
 
-    # 功能函数 - 弹出消息框
+    # 功能函数 - 弹出消息框并切换页面
     def clear_database(self):
         reply = QMessageBox.question(None, '确认', '确定要清空数据库吗？', QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
         if reply == QMessageBox.Yes:
@@ -136,15 +155,16 @@ class Ui_mainWindow(object):
             # 这里可以加入清空数据库的逻辑
 
     def register_user(self):
-        # 这里弹出一个提示框，仅带确认按钮
+        # 切换到数据库注册页面并弹出提示框
+        self.stackedWidget.setCurrentWidget(self.db_page)
         QMessageBox.information(None, '提示', '未连接设备！', QMessageBox.Ok)
         # 这里可以加入注册用户的逻辑
 
     def delete_user(self):
-        # 这里弹出一个提示框，仅带确认按钮
+        # 切换到数据库注册页面并弹出提示框
+        self.stackedWidget.setCurrentWidget(self.db_page)
         QMessageBox.information(None, '提示', '数据库为空！', QMessageBox.Ok)
         # 这里可以加入删除用户的逻辑
-
 
     def update_time(self):
         # 更新当前时间
