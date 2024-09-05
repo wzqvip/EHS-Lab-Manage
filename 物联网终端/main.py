@@ -58,13 +58,20 @@ class Ui_mainWindow(object):
         timer.start(1000)  # 每秒更新一次
 
     def set_background_image(self, mainWindow):
-        # 设置背景图片并拉伸填满窗口
-        palette = QPalette()
-        pixmap = QPixmap("background_image.png")  # 替换成你的背景图片路径
-        scaled_pixmap = pixmap.scaled(mainWindow.size(), QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
-        palette.setBrush(QPalette.Background, QBrush(scaled_pixmap))
-        mainWindow.setPalette(palette)
+        # 获取当前运行文件的目录
+        basedir = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        pixmap_path = os.path.join(basedir, 'background_image.png')  # 使用相对路径
 
+        # 加载图片并设置背景
+        pixmap = QPixmap(pixmap_path)
+        if not pixmap.isNull():  # 确保图片加载成功
+            palette = QPalette()
+            scaled_pixmap = pixmap.scaled(mainWindow.size(), QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+            palette.setBrush(QPalette.Background, QBrush(scaled_pixmap))
+            mainWindow.setPalette(palette)
+        else:
+            print("Failed to load background image!")
+            
     def setup_main_page(self, page):
         # 设置主页面内容
         page.setObjectName("main_page")
