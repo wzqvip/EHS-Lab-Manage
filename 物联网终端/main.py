@@ -29,12 +29,12 @@ class Ui_mainWindow(object):
 
         # 指纹登录页面
         self.fingerprint_page = QtWidgets.QWidget()
-        self.setup_sub_page(self.fingerprint_page, "指纹登录页面")
+        self.setup_sub_page(self.fingerprint_page, "未连接设备！")
         self.stackedWidget.addWidget(self.fingerprint_page)
 
         # 账号密码页面
         self.password_page = QtWidgets.QWidget()
-        self.setup_sub_page(self.password_page, "账号密码页面")
+        self.setup_sub_page(self.password_page, "数据库为空！")
         self.stackedWidget.addWidget(self.password_page)
 
         mainWindow.setCentralWidget(self.centralwidget)
