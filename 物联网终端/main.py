@@ -1,8 +1,11 @@
-import sys
+import sys, os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QTimer, QDateTime
 from PyQt5.QtGui import QFont, QPalette, QBrush, QPixmap
 from PyQt5.QtWidgets import QMessageBox
+
+import serial
+import serial.tools.list_ports
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -11,8 +14,6 @@ class Ui_mainWindow(object):
 
         # 设置背景图片
         self.set_background_image(mainWindow)
-
-
         self.centralwidget = QtWidgets.QWidget(mainWindow)
         self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
         self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 794, 513))
@@ -49,6 +50,33 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
         self.menubar.addAction(self.menu.menuAction())
 
+                 # 添加串口选择菜单
+        self.serial_menu = QtWidgets.QMenu(self.menubar)
+        self.serial_menu.setObjectName("serial_menu")
+        self.serial_menu.setTitle("串口")
+        self.menubar.addMenu(self.serial_menu)
+
+        # 添加串口选择下拉菜单
+        self.port_combo_box = QtWidgets.QComboBox()
+        self.refresh_ports()
+        port_action = QtWidgets.QWidgetAction(self.serial_menu)
+        port_action.setDefaultWidget(self.port_combo_box)
+        self.serial_menu.addAction(port_action)
+
+        # 添加串口连接按钮
+        self.connect_button = QtWidgets.QPushButton("连接串口")
+        connect_action = QtWidgets.QWidgetAction(self.serial_menu)
+        connect_action.setDefaultWidget(self.connect_button)
+        self.serial_menu.addAction(connect_action)
+        
+        self.connect_button.clicked.connect(self.open_serial_connection)
+
+        # 定时刷新串口列表
+        self.refresh_timer = QTimer(mainWindow)
+        self.refresh_timer.timeout.connect(self.refresh_ports)
+        self.refresh_timer.start(5000)  # 每5秒刷新一次串口列表
+
+
         self.retranslateUi(mainWindow)
         QtCore.QMetaObject.connectSlotsByName(mainWindow)
 
@@ -56,6 +84,8 @@ class Ui_mainWindow(object):
         timer = QTimer(mainWindow)
         timer.timeout.connect(self.update_time)
         timer.start(1000)  # 每秒更新一次
+
+        
 
     def set_background_image(self, mainWindow):
         # 获取当前运行文件的目录
@@ -184,6 +214,26 @@ class Ui_mainWindow(object):
         self.pushButton_2.setText(_translate("mainWindow", "指纹登录"))
         self.pushButton_3.setText(_translate("mainWindow", "账号密码"))
         self.menu.setTitle(_translate("mainWindow", "实验室仓库智能管理系统"))
+
+    def refresh_ports(self):
+            """刷新串口列表"""
+            self.port_combo_box.clear()
+            ports = serial.tools.list_ports.comports()
+            for port in ports:
+                self.port_combo_box.addItem(port.device)
+
+    def open_serial_connection(self):
+        """打开选择的串口"""
+        selected_port = self.port_combo_box.currentText()
+        if selected_port:
+            try:
+                self.serial_connection = serial.Serial(selected_port, 9600, timeout=1)
+                QMessageBox.information(None, '成功', f'成功连接到 {selected_port}', QMessageBox.Ok)
+            except serial.SerialException as e:
+                QMessageBox.critical(None, '错误', f'无法连接到 {selected_port}\n{str(e)}', QMessageBox.Ok)
+        else:
+            QMessageBox.warning(None, '警告', '没有选择串口', QMessageBox.Ok)
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
