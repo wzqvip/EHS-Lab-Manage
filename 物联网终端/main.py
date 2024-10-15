@@ -71,6 +71,15 @@ class Ui_mainWindow(object):
         
         self.connect_button.clicked.connect(self.open_serial_connection)
 
+        # 添加断开连接按钮
+        self.disconnect_button = QtWidgets.QPushButton("断开连接")
+        disconnect_action = QtWidgets.QWidgetAction(self.serial_menu)
+        disconnect_action.setDefaultWidget(self.disconnect_button)
+        self.serial_menu.addAction(disconnect_action)
+
+        self.disconnect_button.clicked.connect(self.close_serial_connection)
+
+
         # 定时刷新串口列表
         self.refresh_timer = QTimer(mainWindow)
         self.refresh_timer.timeout.connect(self.refresh_ports)
@@ -229,10 +238,24 @@ class Ui_mainWindow(object):
             try:
                 self.serial_connection = serial.Serial(selected_port, 9600, timeout=1)
                 QMessageBox.information(None, '成功', f'成功连接到 {selected_port}', QMessageBox.Ok)
+                self.connect_button.setText("已连接")
+                self.port_combo_box.setEnabled(False)  # 禁用串口选择下拉框
+                self.refresh_timer.stop()  # 停止刷新串口列表
             except serial.SerialException as e:
                 QMessageBox.critical(None, '错误', f'无法连接到 {selected_port}\n{str(e)}', QMessageBox.Ok)
         else:
             QMessageBox.warning(None, '警告', '没有选择串口', QMessageBox.Ok)
+
+    def close_serial_connection(self):
+        """断开串口连接"""
+        if self.serial_connection and self.serial_connection.is_open:
+            self.serial_connection.close()
+            QMessageBox.information(None, '断开', '串口已断开', QMessageBox.Ok)
+            self.connect_button.setText("连接串口")
+            self.port_combo_box.setEnabled(True)  # 重新启用串口选择
+            self.refresh_timer.start(5000)  # 恢复刷新串口列表
+        else:
+            QMessageBox.warning(None, '警告', '没有连接的串口', QMessageBox.Ok)
 
 
 if __name__ == "__main__":
